@@ -34,6 +34,12 @@ def register_user(session: SessionDep, user_in: UserRegister) -> Any:
             detail="social number not valid",
         )
     user_create = UserCreate.model_validate(user_in)
+    user = crud.get_user_by_social_number(session=session, social_number=user_create.social_number)
+    if user:
+        raise HTTPException(
+            status_code=409,
+            detail="social number already used",
+        )
     user = crud.create_user(session=session, user_create=user_create)
     return UserCreateResponse.model_validate(user)
 

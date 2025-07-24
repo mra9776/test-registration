@@ -51,7 +51,7 @@ class Settings(BaseSettings):
 
     PROJECT_NAME: str
     SENTRY_DSN: HttpUrl | None = None
-    # POSTGRES_SERVER: str
+    POSTGRES_SERVER: str
     # POSTGRES_PORT: int = 5432
     # POSTGRES_USER: str
     # POSTGRES_PASSWORD: str = ""
@@ -60,6 +60,8 @@ class Settings(BaseSettings):
     @computed_field  # type: ignore[prop-decorator]
     @property
     def SQLALCHEMY_DATABASE_URI(self) -> str:
+        print("using:" + self.POSTGRES_SERVER)
+        return self.POSTGRES_SERVER
         sqlite_file_name = "database.db"
         return f"sqlite:///{sqlite_file_name}"
 
